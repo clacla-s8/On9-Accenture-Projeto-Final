@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 dotenv.config();
 
@@ -18,7 +19,9 @@ const objetos = require('./routes/objetoRoutes');
 const alugueis = require('./routes/aluguelRoutes');
 const sessions = require('./routes/sessaoRoute');
 const index = require('./routes/index');
-app.use(cors())
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.json());
 
 app.use('/cliente', clientes);
