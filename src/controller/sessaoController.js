@@ -27,9 +27,11 @@ exports.accessTokenAnunciante = (req, res) => {
 
                 try {
                     var token = jwt.sign({ id }, `${process.env.SECRET}`, {
-                            expiresIn: `${process.env.EXPIRESIN}`,
-                        }),
+                        expiresIn: `${process.env.EXPIRESIN}`,
+                    })
+                    if ((verificarSenha(senhaEntrada, senha))) {
                         res.json({ success: true, token: token })
+                    }
 
                 } catch (e) {
                     return res.status(401).json({ success: false, msg: 'erro no retorno' });
