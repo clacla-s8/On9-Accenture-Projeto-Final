@@ -26,16 +26,11 @@ exports.accessTokenAnunciante = (req, res) => {
                 }
 
                 try {
-                    return res.json({
-                        anunciante: {
-                            id,
-                            email,
-                        },
-                        { success: true },
-                        token: jwt.sign({ id }, `${process.env.SECRET}`, {
+                    var token = jwt.sign({ id }, `${process.env.SECRET}`, {
                             expiresIn: `${process.env.EXPIRESIN}`,
                         }),
-                    });
+                        return res.json({ success: true, token: token })
+
                 } catch (e) {
                     return res.status(401).json({ success: false, msg: 'erro no retorno' });
                 }
@@ -46,6 +41,7 @@ exports.accessTokenAnunciante = (req, res) => {
             });
 
     } catch (e) {
+        hero
         return res.status(401).json({ success: false, msg: 'erro' });
     }
 }
