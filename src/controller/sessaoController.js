@@ -19,10 +19,10 @@ exports.accessTokenAnunciante = (req, res) => {
                 try {
                     verificarSenha(senhaEntrada, senha);
                     if (!(verificarSenha(senhaEntrada, senha))) {
-                        return res.status(401).json({ error: 'senha incorreta' });
+                        return res.status(401).json({ success: false, msg: 'senha incorreta' });
                     }
                 } catch (e) {
-                    return res.status(401).json({ error: 'senha does not match' });
+                    return res.status(401).json({ success: false, msg: 'Senha incorreta' });
                 }
 
                 try {
@@ -31,21 +31,22 @@ exports.accessTokenAnunciante = (req, res) => {
                             id,
                             email,
                         },
+                        { success: true },
                         token: jwt.sign({ id }, `${process.env.SECRET}`, {
                             expiresIn: `${process.env.EXPIRESIN}`,
                         }),
                     });
                 } catch (e) {
-                    return res.status(401).json({ error: 'erro no retorno' });
+                    return res.status(401).json({ success: false, msg: 'erro no retorno' });
                 }
 
             })
             .catch((e) => {
-                return res.status(401).json({ error: 'anunciante não encontrado' });
+                return res.status(401).json({ success: false, msg: 'anunciante não encontrado' });
             });
 
     } catch (e) {
-        return res.status(401).json({ error: 'erro' });
+        return res.status(401).json({ success: false, msg: 'erro' });
     }
 }
 
@@ -63,7 +64,7 @@ exports.accessTokenCliente = (req, res) => {
                         return res.status(401).json({ error: 'senha incorreta' });
                     }
                 } catch (e) {
-                    return res.status(401).json({ error: 'senha does not match' });
+                    return res.status(401).json({ error: 'Senha incorreta' });
                 }
 
                 try {
