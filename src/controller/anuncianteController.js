@@ -44,7 +44,8 @@ const salvarAnunciante = async(req, res, next) => {
             .then(async existeAnunciante => {
                 if (existeAnunciante) {
                     return res.status(400).json({
-                        errors: ['Já existe uma conta com esse e-mail']
+                        success: false,
+                        msg: 'Já existe uma conta com esse email'
                     })
                 }
 
@@ -52,7 +53,7 @@ const salvarAnunciante = async(req, res, next) => {
                 anunciante.senha = senhaEncriptada;
                 anunciante.save()
                     .then((anunciante) => {
-                        res.status(201).json({ mensagem: 'Cadastro realizado com sucesso' });
+                        res.status(201).json({ success: true, msg: 'cadastro realizado !' });
                     })
                     .catch(err => next(err))
             })
