@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
 
 
-const obterTodos = async(req, res) => {
+exports.obterTodos = async(req, res) => {
     Anunciante.find()
         .then((existeAnunciante) => {
             if (existeAnunciante) {
@@ -19,7 +19,7 @@ const obterTodos = async(req, res) => {
         })
 }
 
-const atualizarAnunciante = async(req, res, next) => {
+exports.atualizarAnunciante = async(req, res, next) => {
     const { id } = req.params;
 
     Anunciante.findByIdAndUpdate(id, req.body)
@@ -31,7 +31,7 @@ const atualizarAnunciante = async(req, res, next) => {
 }
 
 
-const salvarAnunciante = async(req, res, next) => {
+exports.salvarAnunciante = async(req, res, next) => {
     const { nome, telefone, endereco, email, senha } = req.body;
     const salt = bcrypt.genSaltSync(bcryptSalt);
 
@@ -43,10 +43,7 @@ const salvarAnunciante = async(req, res, next) => {
         Anunciante.findOne({ email: validacaoAnunciante.email })
             .then(async existeAnunciante => {
                 if (existeAnunciante) {
-                    return res.status(400).json({
-                        success: false,
-                        msg: 'Já existe uma conta com esse email'
-                    })
+                    res.status(400).json({ success: false, msg: 'Já existe uma conta com esse email' })
                 }
 
                 const senhaEncriptada = await bcrypt.hashSync(senha, salt);
@@ -57,15 +54,16 @@ const salvarAnunciante = async(req, res, next) => {
                     })
                     .catch(err => next(err))
             })
-            .catch((err) => {
-                res.status(400).json(err)
+            .catch((e) => {
+                res.status(400).json(e);
+
             })
     } catch (e) {
-        return res.status(500).json(e)
+        return res.status(500).json(e);
     }
 }
 
-const deletarAnunciante = async(req, res, next) => {
+exports.deletarAnunciante = async(req, res, next) => {
     const { id } = req.params;
 
     Anunciante.findById(id)
@@ -98,12 +96,4 @@ const deletarAnunciante = async(req, res, next) => {
         })
         .catch(err => next(err))
 
-}
-
-
-module.exports = {
-    obterTodos,
-    atualizarAnunciante,
-    salvarAnunciante,
-    deletarAnunciante
 }
