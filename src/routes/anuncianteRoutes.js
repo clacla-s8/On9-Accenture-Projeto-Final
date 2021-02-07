@@ -8,8 +8,9 @@ router.post('/cadastrar', anuncianteController.salvarAnunciante);
 router.use(authMiddleware);
 
 router.get('/', anuncianteController.obterTodos);
+router.get('/anunciante', anuncianteController.obterAnunciante);
 
-router.put('/atualizar/:id', anuncianteController.atualizarAnunciante);
+router.put('/atualizar', anuncianteController.atualizarAnunciante);
 
 router.delete('/:id', anuncianteController.deletarAnunciante);
 

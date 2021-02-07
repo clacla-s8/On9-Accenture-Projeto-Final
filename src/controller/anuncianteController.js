@@ -4,6 +4,7 @@ const { signupAnuncianteSchema } = require('../validators/anunciante');
 const Anunciante = require('../model/Anunciante');
 const Objeto = require('../model/Objeto');
 const bcrypt = require('bcrypt');
+
 const bcryptSalt = 10;
 
 
@@ -18,13 +19,25 @@ exports.obterTodos = async(req, res) => {
             res.status(500).json(e)
         })
 }
+exports.obterAnunciante = async(req, res) => {
+
+    Anunciante.findOne({ _id: req.userId })
+        .then((existeAnunciante) => {
+            if (existeAnunciante) {
+                res.status(200).json(existeAnunciante)
+            }
+        })
+        .catch((e) => {
+            res.status(500).json(e)
+        })
+}
 
 exports.atualizarAnunciante = async(req, res, next) => {
-    const { id } = req.params;
-
-    Anunciante.findByIdAndUpdate(id, req.body)
+    //const { id } = req.params;
+    console.log(req.userId);
+    Anunciante.findByIdAndUpdate(req.userId, req.body)
         .then(() => {
-            res.status(200).json({ mensagem: ` ${req.params.id} foi atualizado.` });
+            res.status(200).json({ success: true, msg: "Perfil atualizado." });
         })
         .catch(err => next(err));
 
